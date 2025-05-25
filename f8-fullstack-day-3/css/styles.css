@@ -87,6 +87,7 @@ input {
 /* NAVBAR */
 .navbar {
     background: #14485b;
+    box-shadow: 0px 7.5px 5px rgba(95, 95, 95, 0.25);
 }
 
 .navbar .inner {
