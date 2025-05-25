@@ -1,0 +1,5 @@
+/* Bỏ khoảng cách mà chúng ta không chủ động thêm vào */
+* {
+    margin: 0;
+    padding: 0;
+}

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn xây dựng ứng dụng Todo List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism-okaidia.min.css">
+
+    <!-- Thiết lập kiểu CSS cho giao diện -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .todo-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        #todoInput {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .todo-item:last-child {
+            border-bottom: none;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cấu trúc HTML cho ứng dụng -->
+    <h1>Hướng dẫn xây dựng ứng dụng Todo List</h1>
+    <div class="todo-container">
+        <div class="input-section">
+            <input type="text" id="todoInput" placeholder="Nhập công việc...">
+            <button onclick="addTodo()">Thêm</button>
+        </div>
+        <div id="todoList"></div>
+    </div>
+
+    <!-- JavaScript xử lý logic -->
+    <script>
+        // Mảng lưu trữ danh sách công việc
+        let todos = [];
+
+        // Hàm thêm công việc mới
+        function addTodo() {
+            // Lấy giá trị từ input
+            const todoInput = document.getElementById('todoInput');
+            const todoText = todoInput.value.trim();
+
+            // Kiểm tra nếu input không rỗng
+            if (todoText !== '') {
+                // Thêm công việc vào mảng
+                todos.push(todoText);
+                // Cập nhật giao diện
+                renderTodos();
+                // Xóa nội dung input
+                todoInput.value = '';
+            }
+        }
+
+        // Hàm hiển thị danh sách công việc
+        function renderTodos() {
+            // Lấy phần tử chứa danh sách
+            const todoList = document.getElementById('todoList');
+            // Xóa nội dung cũ
+            todoList.innerHTML = '';
+
+            // Duyệt qua mảng todos để tạo các phần tử HTML
+            todos.forEach((todo, index) => {
+                const todoItem = document.createElement('div');
+                todoItem.className = 'todo-item';
+                todoItem.innerHTML = `
+                    <span>${todo}</span>
+                    <button class="delete-btn" onclick="deleteTodo(${index})">Xóa</button>
+                `;
+                todoList.appendChild(todoItem);
+            });
+        }
+
+        // Hàm xóa công việc
+        function deleteTodo(index) {
+            // Xóa công việc tại vị trí index
+            todos.splice(index, 1);
+            // Cập nhật lại giao diện
+            renderTodos();
+        }
+
+        // Gắn sự kiện Enter cho input
+        document.getElementById('todoInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTodo();
+            }
+        });
+    </script>
+
+    <h2>1. Cấu Trúc HTML</h2>
+    <pre>
+<code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Hướng dẫn x&acirc;y dựng ứng dụng Todo List&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Cấu tr&uacute;c HTML cho ứng dụng --&gt;
+    &lt;h1&gt;Hướng dẫn x&acirc;y dựng ứng dụng Todo List&lt;/h1&gt;
+    &lt;div class=&quot;todo-container&quot;&gt;
+        &lt;div class=&quot;input-section&quot;&gt;
+            &lt;input type=&quot;text&quot; id=&quot;todoInput&quot; placeholder=&quot;Nhập c&ocirc;ng việc...&quot;&gt;
+            &lt;button onclick=&quot;addTodo()&quot;&gt;Th&ecirc;m&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;todoList&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+    <h3>Giải thích:</h3>
+    <ul>
+        <li><p><code class="language-html">&lt;!DOCTYPE html&gt;</code>: Khai báo loại tài liệu là HTML5, đảm bảo trình duyệt hiển thị đúng chuẩn.</p></li>
+        <li><p><code class="language-html">&lt;html lang=&quot;vi&quot;&gt;</code>: Xác định ngôn ngữ là tiếng Việt, hỗ trợ tối ưu hóa SEO và bản địa hóa.</p></li>
+        <li><p><code class="language-html">&lt;meta charset=&quot;UTF-8&quot;&gt;</code>: Sử dụng bộ mã ký tự UTF-8, hỗ trợ hiển thị các ký tự đặc biệt như tiếng Việt.</li>
+        <li><p><code class="language-html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</code>: Đảm bảo giao diện responsive, phù hợp với các kích thước màn hình.</p></li>
+        <li><p><code class="language-html">&lt;title&gt;</code>: Khai báo loại tài liệu là HTML5, đảm bảo trình duyệt hiển thị đúng chuẩn.</p></li>
+        <li><p><code class="language-html">&lt;h1&gt;</code>: Tiêu đề chính, hiển thị tên ứng dụng.</p></li>
+        <li><p><code class="language-html">&lt;input&gt;</code>: Ô nhập liệu để người dùng thêm công việc, có id để JavaScript truy cập, và placeholder gợi ý.</p></li>
+        <li><p><code class="language-html">&lt;button&gt;</code>: Nút kích hoạt hàm <code class="language-html">addTodo()</code> khi nhấp chuột.</p></li>
+        <li><p><code class="language-html">&lt;div id=&quot;todoList&quot;&gt;&lt;/div&gt;</code>: Khu vực hiển thị danh sách công việc, được cập nhật tự động bởi JavaScript.</p></li>
+    </ul>
+
+    <h2>2. Cấu trúc CSS</h2>
+    <pre>
+<code class="language-css">body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+h1 {
+    text-align: center;
+    color: #333;
+}
+.todo-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+#todoInput {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover {
+    background-color: #218838;
+}
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+.todo-item:last-child {
+    border-bottom: none;
+}
+.delete-btn {
+    background-color: #dc3545;
+}
+.delete-btn:hover {.body
+    background-color: #c82333;
+}</code></pre>
+
+    <h3>Giải thích:</h3>
+    <ul>
+        <li><p><code class="language-css">body</code>: Đặt font chữ là Arial, giới hạn chiều rộng tối đa 600px, căn giữa trang, thêm padding và màu nền xám nhạt.</p></li>
+        <li><p><code class="language-css">h1</code>: Căn giữa tiêu đề và đặt màu chữ tối.</p></li>
+        <li><p><code class="language-css">.todo-container</code>: Nền trắng, padding 20px, bo góc 8px, và thêm bóng đổ nhẹ để tạo hiệu ứng nổi.</p></li>
+        <li><p><code class="language-css">.input-section</code>: Sử dụng flexbox để sắp xếp input và button ngang hàng, cách nhau 10px, và thêm margin-bottom.</p></li>
+        <li><p><code class="language-css">#todoInput</code>: Cho phép input giãn nở (flex: 1), padding 10px, kích thước chữ 16px, viền nhẹ và bo góc.</p></li>
+        <li><p><code class="language-css">button</code>: Kích thước 10px 20px, màu nền xanh lá (Bootstrap green), chữ trắng, bo góc, và con trỏ tay khi hover.</p><ul><li><p><code class="language-css">button:hover</code>: Thay đổi màu nền khi di chuột để tạo hiệu ứng tương tác.</p></li></ul></li>
+        <li><p><code class="language-css">.todo-item</code>: Sử dụng flexbox để sắp xếp nội dung và nút xóa, padding 10px, và thêm viền dưới.</p><ul><li><p><code class="language-css">.todo-item:last-child</code>: Loại bỏ viền dưới cho item cuối cùng.</p></li></ul></li>
+        <li><p><code class="language-css">.delete-btn</code>Màu nền đỏ (Bootstrap danger), thay đổi màu khi hover để nhấn mạnh nút xóa.</p></li>
+    </ul>
+
+    <h2>3. Cấu trúc JavaScript</h2>
+    <pre>
+<code class="language-javascript">// Mảng lưu trữ danh s&aacute;ch c&ocirc;ng việc
+let todos = [];
+
+// H&agrave;m th&ecirc;m c&ocirc;ng việc mới
+function addTodo() {
+    // Lấy gi&aacute; trị từ input
+    const todoInput = document.getElementById('todoInput');
+    const todoText = todoInput.value.trim();
+
+    // Kiểm tra nếu input kh&ocirc;ng rỗng
+    if (todoText !== '') {
+        // Th&ecirc;m c&ocirc;ng việc v&agrave;o mảng
+        todos.push(todoText);
+        // Cập nhật giao diện
+        renderTodos();
+        // X&oacute;a nội dung input
+        todoInput.value = '';
+    }
+}
+
+// H&agrave;m hiển thị danh s&aacute;ch c&ocirc;ng việc
+function renderTodos() {
+    // Lấy phần tử chứa danh s&aacute;ch
+    const todoList = document.getElementById('todoList');
+    // X&oacute;a nội dung cũ
+    todoList.innerHTML = '';
+
+    // Duyệt qua mảng todos để tạo c&aacute;c phần tử HTML
+    todos.forEach((todo, index) =&gt; {
+        const todoItem = document.createElement('div');
+        todoItem.className = 'todo-item';
+        todoItem.innerHTML = `
+            &lt;span&gt;${todo}&lt;/span&gt;
+            &lt;button class=&quot;delete-btn&quot; onclick=&quot;deleteTodo(${index})&quot;&gt;X&oacute;a&lt;/button&gt;
+        `;
+        todoList.appendChild(todoItem);
+    });
+}
+
+// H&agrave;m x&oacute;a c&ocirc;ng việc
+function deleteTodo(index) {
+    // X&oacute;a c&ocirc;ng việc tại vị tr&iacute; index
+    todos.splice(index, 1);
+    // Cập nhật lại giao diện
+    renderTodos();
+}
+
+// Gắn sự kiện Enter cho input
+document.getElementById('todoInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        addTodo();
+    }
+});</code></pre>
+
+    <h3>Giải thích</h3>
+    <ul>
+        <li><p><code class="language-javascript">let todos = [];</code>: Khởi tạo mảng rỗng để lưu danh sách công việc.</p></li>
+        <li><code class="language-javascript">function addTodo()</code>: <ul>
+            <li><p>Lấy giá trị từ input (<code class="language-javascript">todoInput.value</code>), loại bỏ khoảng trắng thừa (<code class="language-javascript">trim()</code>).</p></li>
+            <li><p>Kiểm tra nếu không rỗng, thêm vào mảng <code class="language-javascript">todos</code>, gọi <code class="language-javascript">renderTodos()</code> để cập nhật giao diện, và xóa nội dung input.</p></li>
+        </ul></li>
+        <li><code class="language-javascript">function renderTodos()</code>: <ul>
+            <li><p>Lấy phần tử <code class="language-javascript">todoList</code>, xóa nội dung cũ (<code class="language-javascript">innerHTML = ''</code>).</p></li>
+            <li><p>Duyệt mảng <code class="language-javascript">todos</code>, tạo div cho mỗi công việc với lớp <code class="language-javascript">todo-item</code> chứa nội dung công việc và nút xóa, sau đó thêm vào DOM.</p></li>
+        </ul></li>
+        <li><code class="language-javascript">function deleteTodo(index)</code>: <ul>
+            <li><p>Xóa phần tử tại vị trí <code class="language-javascript">index</code>, trong mảng <code class="language-javascript">todos</code> bằng <code class="language-javascript">splice()</code>.</p></li>
+            <li><p>Gọi <code class="language-javascript">renderTodos()</code> để cập nhật giao diện.</p></li>
+        </ul></li>
+        <li><p><code class="language-javascript">addEventListener('keypress')</code>: Lắng nghe phím Enter trên input, gọi <code class="language-javascript">addTodo()</code> khi nhấn Enter.</p></li>
+    </ul>
+
+    <!-- PrismJS -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+</body>
+</html>
